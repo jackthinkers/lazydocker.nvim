@@ -1,56 +1,26 @@
-# lazydocker.nvim
+# LazyDocker.nvim
 
-Plugin for calling [lazydocker](https://github.com/jesseduffield/lazydocker) from within neovim.
+Work in progress
 
-![](https://user-images.githubusercontent.com/1813121/87866391-79fcfe00-c93e-11ea-94a9-204947de1b39.gif)
+All credits to the original LazyGit.nvim creator [kdheepak](https://github.com/kdheepak/lazygit.nvim)
 
-See [akinsho/nvim-toggleterm](https://github.com/akinsho/nvim-toggleterm.lua#custom-terminals) or [voldikss/vim-floaterm](https://github.com/voldikss/vim-floaterm) as an alternative to this package.
+Plugin for calling [LazyDocker](https://github.com/jesseduffield/lazydocker) from within neovim.
+
+![](https://github.com/jesseduffield/lazydocker/blob/master/docs/resources/demo3.gif)
 
 ### Install
-
-Install using [`vim-plug`](https://github.com/junegunn/vim-plug):
-
-```vim
-" nvim v0.7.2
-Plug 'kdheepak/lazydocker.nvim'
-```
-
-Install using [`packer.nvim`](https://github.com/wbthomason/packer.nvim):
-
-```lua
--- nvim v0.7.2
-use({
-    "kdheepak/lazydocker.nvim",
-    -- optional for floating window border decoration
-    requires = {
-        "nvim-lua/plenary.nvim",
-    },
-})
-```
 
 Install using [`lazy.nvim`](https://github.com/folke/lazy.nvim):
 
 ```lua
--- nvim v0.8.0
-require("lazy").setup({
-    {
-        "kdheepak/lazydocker.nvim",
-        -- optional for floating window border decoration
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
+{
+    "BrunoKrugel/lazydocker.nvim",
+    cmd = "LazyDocker",
+    -- optional for floating window border decoration
+    dependencies = {
+        "nvim-lua/plenary.nvim",
     },
-})
-```
-
-Feel free to use any plugin manager.
-Just remember that if you are not using the latest neovim release, you will need to use [the `nvim-v0.4.3` branch](https://github.com/kdheepak/lazydocker.vim/tree/nvim-v0.4.3).
-Integration with `nvr` works better on the `main` branch.
-
-You can check what version of `neovim` you have:
-
-```bash
-nvim --version
+},
 ```
 
 ### Usage
@@ -80,12 +50,8 @@ vim.g.lazydocker_config_file_path = '' -- custom config file path
 ```
 
 Call `:LazyDocker` to start a floating window with `lazydocker` in the current working directory.
-And set up a mapping to call `:LazyDocker`:
 
-```vim
-" setup mapping to call :LazyDocker
-nnoremap <silent> <leader>gg :LazyDocker<CR>
-```
+Or set up a mapping to call `:LazyDocker`:
 
 Call `:LazyDockerCurrentFile` to start a floating window with `lazydocker` in the project root of the current file.
 
@@ -229,29 +195,6 @@ require("lazy").setup({
         end,
     },
 })
-```
-
-Lazy loading `lazydocker.nvim` for telescope functionality is not supported. Open an issue if you wish to have this feature.
-
-If you are not using Packer, to load the telescope extension, you have to add this line to your configuration:
-
-```lua
-require('telescope').load_extension('lazydocker')
-```
-
-By default the paths of each repo is stored only when lazydocker is triggered.
-Though, this may not be convenient, so it possible to do something like this:
-
-```vim
-autocmd BufEnter * :lua require('lazydocker.utils').project_root_dir()
-```
-
-That makes sure that any opened buffer which is contained in a git repo will be tracked.
-
-Once you have loaded the extension, you can invoke the plugin using:
-
-```lua
-lua require("telescope").extensions.lazydocker.lazydocker()
 ```
 
 ### Highlighting groups
