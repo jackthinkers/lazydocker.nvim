@@ -2,16 +2,16 @@ local api = vim.api
 
 --- open floating window with nice borders
 local function open_floating_window()
-  local floating_window_scaling_factor = vim.g.lazydocker_floating_window_scaling_factor
+  local floating_window_scaling_factor = vim.g.lazygit_floating_window_scaling_factor
 
   -- Why is this required?
-  -- vim.g.lazydocker_floating_window_scaling_factor returns different types if the value is an integer or float
+  -- vim.g.lazygit_floating_window_scaling_factor returns different types if the value is an integer or float
   if type(floating_window_scaling_factor) == 'table' then
     floating_window_scaling_factor = floating_window_scaling_factor[false]
   end
 
   local status, plenary = pcall(require, 'plenary.window.float')
-  if status and vim.g.lazydocker_floating_window_use_plenary and vim.g.lazydocker_floating_window_use_plenary ~= 0 then
+  if status and vim.g.lazygit_floating_window_use_plenary and vim.g.lazygit_floating_window_use_plenary ~= 0 then
     plenary.percentage_range_window(floating_window_scaling_factor, floating_window_scaling_factor)
     return
   end
@@ -34,7 +34,7 @@ local function open_floating_window()
   local opts = { style = 'minimal', relative = 'editor', row = row, col = col, width = width, height = height }
 
   local topleft, top, topright, right, botright, bot, botleft, left
-  local window_chars = vim.g.lazydocker_floating_window_border_chars
+  local window_chars = vim.g.lazygit_floating_window_border_chars
   if type(window_chars) == 'table' and #window_chars == 8 then
     topleft, top, topright, right, botright, bot, botleft, left = unpack(window_chars)
   else
@@ -55,25 +55,25 @@ local function open_floating_window()
   api.nvim_buf_set_lines(border_buffer, 0, -1, true, border_lines)
   -- create border window
   local border_window = api.nvim_open_win(border_buffer, true, border_opts)
-  vim.api.nvim_set_hl(0, "lazydockerBorder", { link = "Normal", default = true })
-  vim.cmd('set winhl=NormalFloat:lazydockerBorder')
+  vim.api.nvim_set_hl(0, "LazyGitBorder", { link = "Normal", default = true })
+  vim.cmd('set winhl=NormalFloat:LazyGitBorder')
 
   -- create a unlisted scratch buffer
-  if lazydocker_BUFFER == nil or vim.fn.bufwinnr(lazydocker_BUFFER) == -1 then
-    lazydocker_BUFFER = api.nvim_create_buf(false, true)
+  if LAZYGIT_BUFFER == nil or vim.fn.bufwinnr(LAZYGIT_BUFFER) == -1 then
+    LAZYGIT_BUFFER = api.nvim_create_buf(false, true)
   else
-    lazydocker_LOADED = true
+    LAZYGIT_LOADED = true
   end
   -- create file window, enter the window, and use the options defined in opts
-  local win = api.nvim_open_win(lazydocker_BUFFER, true, opts)
+  local win = api.nvim_open_win(LAZYGIT_BUFFER, true, opts)
 
-  vim.bo[lazydocker_BUFFER].filetype = 'lazydocker'
+  vim.bo[LAZYGIT_BUFFER].filetype = 'lazygit'
 
   vim.cmd('setlocal bufhidden=hide')
   vim.cmd('setlocal nocursorcolumn')
-  vim.api.nvim_set_hl(0, "lazydockerFloat", { link = "Normal", default = true })
-  vim.cmd('setlocal winhl=NormalFloat:lazydockerFloat')
-  vim.cmd('set winblend=' .. vim.g.lazydocker_floating_window_winblend)
+  vim.api.nvim_set_hl(0, "LazyGitFloat", { link = "Normal", default = true })
+  vim.cmd('setlocal winhl=NormalFloat:LazyGitFloat')
+  vim.cmd('set winblend=' .. vim.g.lazygit_floating_window_winblend)
 
   -- use autocommand to ensure that the border_buffer closes at the same time as the main buffer
   local cmd = [[autocmd WinLeave <buffer> silent! execute 'hide']]

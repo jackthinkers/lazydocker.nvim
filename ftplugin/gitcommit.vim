@@ -1,7 +1,7 @@
-if exists("g:lazydocker_opened") && g:lazydocker_opened && g:lazydocker_use_neovim_remote && executable("nvr")
-    augroup lazydocker_neovim_remote
+if exists("g:lazygit_opened") && g:lazygit_opened && g:lazygit_use_neovim_remote && executable("nvr")
+    augroup lazygit_neovim_remote
       autocmd!
-      autocmd BufUnload <buffer> :lua local root = require('lazydocker').project_root_dir(); vim.schedule(function() require('lazydocker').lazydocker(root) end)
-      autocmd BufUnload <buffer> :let g:lazydocker_opened=0
+      autocmd BufUnload <buffer> :lua local root = require('lazygit').project_root_dir(); vim.schedule(function() require('lazygit').lazygit(root) end)
+      autocmd BufUnload <buffer> :let g:lazygit_opened=0
     augroup END
 end
