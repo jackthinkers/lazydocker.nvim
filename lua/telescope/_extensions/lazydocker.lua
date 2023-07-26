@@ -3,14 +3,14 @@ local finders = require("telescope.finders")
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local conf = require("telescope.config").values
-local lazygit_utils = require("lazygit.utils")
+local lazydocker_utils = require("lazydocker.utils")
 
 
-local function open_lazygit(prompt_buf)
+local function open_lazydocker(prompt_buf)
     local entry = action_state.get_selected_entry()
     vim.fn.execute('cd ' .. entry.value)
 
-    local cmd = [[lua require"lazygit".lazygit(nil)]]
+    local cmd = [[lua require"lazydocker".lazydocker(nil)]]
     vim.api.nvim_command(cmd)
 
     vim.cmd('stopinsert')
@@ -20,7 +20,7 @@ local function open_lazygit(prompt_buf)
 end
 
 
-local lazygit_repos = function(opts)
+local lazydocker_repos = function(opts)
     local displayer = require("telescope.pickers.entry_display").create {
         separator = "",
         -- TODO: make use of telescope geometry
@@ -32,7 +32,7 @@ local lazygit_repos = function(opts)
     }
 
     local repos = {}
-    for _, v in pairs(lazygit_utils.lazygit_visited_git_repos) do
+    for _, v in pairs(lazydocker_utils.lazydocker_visited_git_repos) do
         if v == nil then
             goto skip
         end
@@ -52,7 +52,7 @@ local lazygit_repos = function(opts)
     end
 
     pickers.new(opts or {}, {
-        prompt_title = "lazygit repos",
+        prompt_title = "lazydocker repos",
         finder = finders.new_table {
             results = repos,
             entry_maker = function(entry)
@@ -74,11 +74,11 @@ local lazygit_repos = function(opts)
         sorter = conf.generic_sorter(opts),
         attach_mappings = function(prompt_buf, _)
             actions.select_default:replace(function ()
-                    -- for what ever reason any attempt to open an external window (such as lazygit)
+                    -- for what ever reason any attempt to open an external window (such as lazydocker)
                     -- shall be done after closing the buffer manually
                     actions.close(prompt_buf)
 
-                    open_lazygit()
+                    open_lazydocker()
                 end
             )
             return true
@@ -88,6 +88,6 @@ end
 
 return require("telescope").register_extension({
     exports = {
-        lazygit = lazygit_repos,
+        lazydocker = lazydocker_repos,
     }
 })
