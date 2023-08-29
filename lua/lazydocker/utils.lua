@@ -51,7 +51,7 @@ local function project_root_dir()
   -- always use bash on Unix based systems.
   local oldshell = vim.o.shell
   if vim.fn.has('win32') == 0 then
-    vim.o.shell = 'bash'
+    vim.o.shell = 'zsh'
   end
 
   local cwd = vim.loop.cwd()
